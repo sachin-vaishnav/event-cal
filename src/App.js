@@ -20,7 +20,7 @@ function renderEventContent(eventInfo) {
 function App() {
   return (
     <div className="App">
-      <div>
+      <div style={{padding:"3% 5%"}}>
      
       <Fullcalendar
         plugins={[dayGridPlugin, timeGridPlugin, interactionPlugin]}
