@@ -2,41 +2,102 @@ import Fullcalendar from "@fullcalendar/react";
 import dayGridPlugin from "@fullcalendar/daygrid";
 import timeGridPlugin from "@fullcalendar/timegrid";
 import interactionPlugin from "@fullcalendar/interaction";
-import Grid from "./Grid";
-import './App.css'
-const events = [
-  { title: 'Meeting', start: new Date() }
-]
 
-function renderEventContent(eventInfo) {
-  return (
-    <>
-      <b>{eventInfo.timeText}</b>
-      <i>{eventInfo.event.title}</i>
-    </>
-  )
-}
+import './App.css'
+import { useEffect, useState } from "react";
+import axios from "axios";
+const events = [
+  { title: 'Meeting', start: new Date() },
+
+]
+// /get-all-visits
+
 
 function App() {
+  const [data, setData] = useState([])
+  const [events, setEvents] = useState([]);
+
+  useEffect(() => {
+    axios.post("https://four-seasons-be-e4f102fd0366.herokuapp.com/get-all-visits", {
+      auth_code: "Secured"
+    })
+      .then((res) => {
+        const eventData = res?.data;
+        console.log("res", eventData);
+
+        // Format the response data into FullCalendar events
+        const formattedEvents = eventData
+  .filter(event => event.patient_name !== null && event.status !== null)
+  .map(event => ({
+    title: `${event.patient_name} - ${event.status}`,
+    start: event.date
+  }));
+        // console.log("formattedEvents",formattedEvents)
+        setEvents(formattedEvents);
+      })
+      .catch((error) => {
+        console.error('Error fetching data:', error);
+      });
+  }, []);
+ 
+
+
+
+
+  const [bg, setBg] = useState()
+  function renderEventContent(eventInfo) {
+    // Check condition for changing background color
+
+    console.log("eventInfo.event.extendedProps", eventInfo.event)
+
+    let con = eventInfo.event.title.split()
+    console.log("con", con)
+    let backgroundColor = '';
+    if (con[0].includes("Upcoming")) {
+      backgroundColor = 'Grey';
+    } else if (con[0].includes("Completed")) {
+      backgroundColor = 'rgba(90, 149, 90, 0.7)';
+    }
+    else {
+      backgroundColor = 'rgba(255, 0, 0, 0.6)';
+
+    }
+    console.log("backgroundColor", con.includes("Upcoming"))
+
+    return (
+      <div style={{ backgroundColor: backgroundColor, padding: '10px', borderRadius: '5px', border: "none", fontWeight: 'bold' }}>
+        <b>{eventInfo.timeText}</b>
+        <i>{eventInfo.event.title}</i>
+      </div>
+    );
+  }
+
+  // console.log("events", events)
   return (
     <div className="App">
-      <div style={{padding:"3% 5%"}}>
-     
-      <Fullcalendar
-        plugins={[dayGridPlugin, timeGridPlugin, interactionPlugin]}
-        initialView={"dayGridMonth"}
-        events={events}
-        headerToolbar={{
-          start: "today prev,next", // will normally be on the left. if RTL, will be on the right
-          center: "title",
-          end: "dayGridMonth,timeGridWeek,timeGridDay", // will normally be on the right. if RTL, will be on the left
-        }}
-        height={"90vh"}
-      />
-    </div>
-    
+      <div style={{ padding: "3% 20px" }}>
+
+        <Fullcalendar
+          plugins={[dayGridPlugin, timeGridPlugin, interactionPlugin]}
+          initialView={"dayGridMonth"}
+          eventContent={renderEventContent}
+          events={events}
+          headerToolbar={{
+            start: "today prev,next",
+            center: "title",
+            end: "dayGridMonth,timeGridWeek,timeGridDay",
+            
+          }}
+          dayMaxEventRows= {2}
+          height={"90vh"}
+        />
+      </div>
+
     </div>
   );
 }
 
 export default App;
+
+
+
