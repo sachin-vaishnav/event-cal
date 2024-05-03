@@ -12,7 +12,7 @@ const Data = () => {
   const [events, setEvents] = useState([]);
 
   useEffect(() => {
-    axios.post("https://four-seasons-be-e4f102fd0366.herokuapp.com/get-all-visits", {
+    axios.post(`https://four-seasons-be-e4f102fd0366.herokuapp.com/get-all-visits/${id}`, {
       auth_code: "Secured"
     })
       .then((res) => {
