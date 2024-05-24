@@ -21,3 +21,8 @@ code {
   max-height: 500px !important;
   overflow-y: scroll !important;
 }
+
+
+.css-1t8l2tu-MuiInputBase-input-MuiOutlinedInput-input{
+  width: 350px !important;
+}
