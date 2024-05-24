@@ -2,7 +2,7 @@ import { BrowserRouter , Route, Router, Routes, useParams } from 'react-router-d
 import Data from './Data';
 import AppM from './AppM';
 
-
+import '@mui/material/styles';
 
 // /get-all-visits
 
