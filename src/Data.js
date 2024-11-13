@@ -12,14 +12,12 @@ const Data = () => {
   const [events, setEvents] = useState([]);
 
   useEffect(() => {
-    axios.post(`https://four-seasons-be-e4f102fd0366.herokuapp.com/get-all-visits/${id}`, {
+    axios.post(`https://fs-be-prod-482a21101d6d.herokuapp.com/get-all-visits/${id}`, {
       auth_code: "Secured"
     })
       .then((res) => {
         const eventData = res?.data;
-       
-
-        // Format the response data into FullCalendar events
+     
         const formattedEvents = eventData
   .filter(event => event.patient_name !== null && event.status !== null)
   .map(event => ({
@@ -42,10 +40,7 @@ console.log("id",id)
 
   const [bg, setBg] = useState()
   function renderEventContent(eventInfo) {
-    // Check condition for changing background color
-
-
-
+  
     let con = eventInfo.event.title.split()
  
     let backgroundColor = '';
