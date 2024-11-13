@@ -54,7 +54,7 @@ console.log("id",id)
 
     }
     return (
-      <div style={{ backgroundColor: backgroundColor, padding: '10px', borderRadius: '5px', border: "none", fontWeight: 'bold' }}>
+      <div style={{ backgroundColor: backgroundColor, padding: '5px', borderRadius: '5px', border: "none", fontSize:'10px',fontWeight:'bold', whiteSpace: 'normal' }}>
         <b>{eventInfo.timeText}</b>
         <i>{eventInfo.event.title}</i>
       </div>
